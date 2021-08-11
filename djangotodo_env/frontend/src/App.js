@@ -30,7 +30,23 @@ const App = () => {
         setLoading(true);
         getData();
         setLoading(false);
-    }, []);
+    }, [addModel]);
+
+    const handleDone = (e, item) => {
+        const value = e.target.checked;
+        let _item = item;
+        _item.is_done = value;
+
+        setLoading(true);
+
+        axios
+            .put(`/api/todos/${item.id}/`, _item)
+            .then(() => getData())
+            .catch((err) => console.log(err));
+
+        getData();
+        setLoading(false);
+    };
 
     if (loading)
         return (
@@ -38,8 +54,6 @@ const App = () => {
                 Loading...Please wait...
             </div>
         );
-
-    console.log("data is", data);
 
     return (
         <div className="App flex items-center w-full h-full flex-col">
@@ -78,8 +92,9 @@ const App = () => {
                                         <td className="px-4 py-3 text-xs cursor-pointer">
                                             <input
                                                 type="checkbox"
-                                                // checked={item.is_done}
+                                                checked={item.is_done}
                                                 className="cursor-pointer"
+                                                onChange={(e) => handleDone(e, item)}
                                             />
                                         </td>
                                         <td className="px-4 py-3 text-sm">
