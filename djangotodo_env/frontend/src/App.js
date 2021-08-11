@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import AddModel from "./Components/AddModel";
+
 const App = () => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
+    const [addModel, setAddModel] = useState(false);
 
     const showDate = (data) => {
         // get a new date (locale machine date time)
@@ -16,12 +19,16 @@ const App = () => {
         return _date;
     };
 
-    useEffect(() => {
-        setLoading(true);
+    const getData = () => {
         axios
             .get("/api/todos/")
             .then(({ data }) => setData(data))
             .catch((err) => console.log(err));
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        getData();
         setLoading(false);
     }, []);
 
@@ -38,6 +45,14 @@ const App = () => {
         <div className="App flex items-center w-full h-full flex-col">
             <h1 className="text-4xl mt-3">ToDo App</h1>
 
+            <button
+                className="mt-5 border bg-green-600 text-white px-4 py-2 rounded text-base"
+                onClick={() => setAddModel(true)}
+            >
+                + Add new Task
+            </button>
+
+            {addModel && <AddModel closeModel={() => setAddModel(false)} />}
             {/* // todo table */}
             {data.length > 0 && (
                 <div className="overflow-hidden rounded-lg shadow-xs w-full mt-5 max-w-2xl">
