@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api/', include(router.urls)),
     path('api/all/', views.TaskGetController.as_view()),
+    path('api/task/<int:id>', views.TaskEditController.as_view()),
     path('test/', views.test),
 
 ]

@@ -1,6 +1,7 @@
 import json
 from django.http import HttpResponse, JsonResponse
 from django.views import View
+from django.shortcuts import get_object_or_404
 
 from .models import ToDo
 
@@ -17,6 +18,22 @@ class TaskGetController(View):
         payload = list(item.to_json() for item in queryset)
 
         # return HttpResponse(json.dumps(payload), content_type="application/json")
+        return JsonResponse(payload, safe=False)
+
+    def post(self, request):
+        payload = json.loads(request.body)
+        print(payload)
+        return HttpResponse(status=200)
+
+        # Return data in a class format
+
+
+class TaskEditController(View):
+
+    def get(self, request, id):
+        queryset = get_object_or_404(ToDo, pk=id)
+        payload = (queryset.to_json())
+        # payload = list(item.to_json() for item in queryset)
         return JsonResponse(payload, safe=False)
 
     def post(self, request):
