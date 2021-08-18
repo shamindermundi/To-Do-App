@@ -16,25 +16,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
+
 from todo import views
-from django.http import HttpResponse, JsonResponse
-
-router = routers.DefaultRouter()
-router.register(r'todos', views.TodoView, 'todo')
-
-
-def test(request):
-    return HttpResponse("<h1> Test api </h1>", content_type="text/html")
-
-
-def home(request):
-    return JsonResponse({"ok": 'true', 'errors': None})
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('test/', home),
-    path('test2/', test),
+    # path('api/', include(router.urls)),
+    path('api/all/', views.TaskGetController.as_view()),
+    path('test/', views.test),
+
 ]
