@@ -9,3 +9,16 @@ class ToDo(models.Model):
 
     def _str_(self):
         return self.title
+
+    # this function added to return json data without converting the query set
+    def to_json(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'isDone': self.is_done,
+            'createdAt': str(self.data_added)
+        }
+
+    @property
+    def is_not_done(self):
+        return not self.is_done
